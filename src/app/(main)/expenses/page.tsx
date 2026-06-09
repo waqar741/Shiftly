@@ -7,7 +7,7 @@ import { useRole } from "@/components/layout/RoleContext";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 
-export default function ExpensesPage() {
+function ExpensesPageContent() {
   const { role } = useRole();
   const router = useRouter();
   const pathname = usePathname();
@@ -426,5 +426,14 @@ export default function ExpensesPage() {
         destructive={confirmDialog.newStatus === 'REJECTED'}
       />
     </div>
+  );
+}
+
+
+export default function ExpensesPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <ExpensesPageContent />
+    </React.Suspense>
   );
 }

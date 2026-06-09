@@ -6,7 +6,7 @@ import { Modal, ConfirmDialog, useToast, EmptyState } from "@/components/ui/comp
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function ShiftTypesPage() {
+function ShiftTypesPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -275,5 +275,14 @@ export default function ShiftTypesPage() {
         destructive={confirmDialog.newStatus === 'INACTIVE'}
       />
     </div>
+  );
+}
+
+
+export default function ShiftTypesPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <ShiftTypesPageContent />
+    </React.Suspense>
   );
 }

@@ -6,7 +6,7 @@ import { Modal, ConfirmDialog, SearchableSelect, useToast } from "@/components/u
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function EmployeesPage() {
+function EmployeesPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -427,5 +427,14 @@ export default function EmployeesPage() {
         destructive={confirmDialog.newStatus === "INACTIVE"}
       />
     </div>
+  );
+}
+
+
+export default function EmployeesPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <EmployeesPageContent />
+    </React.Suspense>
   );
 }

@@ -5,7 +5,7 @@ import { Plus, Filter, History, Edit } from "lucide-react";
 import { Modal, SearchableSelect, useToast } from "@/components/ui/components";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function RatesPage() {
+function RatesPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -268,5 +268,14 @@ export default function RatesPage() {
         </form>
       </Modal>
     </div>
+  );
+}
+
+
+export default function RatesPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <RatesPageContent />
+    </React.Suspense>
   );
 }

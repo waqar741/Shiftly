@@ -10,6 +10,7 @@ interface User {
   fullName: string;
   employeeCode: string;
   email: string;
+  mobile?: string;
   role: { name: string };
   branch: { id: number; name: string } | null;
 }

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const hash = await bcrypt.hash('Shiftly@123', 10);
-  
+
   // Ensure roles exist
   const roles = ['SUPER_ADMIN', 'ADMIN', 'BRANCH_MANAGER', 'EMPLOYEE'];
   for (const name of roles) {
@@ -66,17 +66,13 @@ async function main() {
   // Update .env file
   const envPath = '.env';
   let envContent = fs.readFileSync(envPath, 'utf8');
-  
+
   const commentStart = '\n# --- TEST LOGIN CREDENTIALS ---';
   if (envContent.includes(commentStart)) {
     envContent = envContent.substring(0, envContent.indexOf(commentStart));
   }
-  
+
   envContent += `\n# --- TEST LOGIN CREDENTIALS ---
-# SUPER ADMIN -> Mobile: 9999999999 | Password: Shiftly@123
-# ADMIN -> Mobile: 1234567890 | Password: Shiftly@123
-# BRANCH MANAGER -> Mobile: 7021396917 | Password: Shiftly@123
-# EMPLOYEE -> Mobile: 8888888888 | Password: Shiftly@123
 `;
 
   fs.writeFileSync(envPath, envContent);

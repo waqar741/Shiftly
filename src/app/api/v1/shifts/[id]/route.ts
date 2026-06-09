@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const shiftId = parseInt(params.id);
+    const shiftId = parseInt((await params).id);
     const shift = await prisma.shiftLog.findUnique({
       where: { id: shiftId },
       include: {
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userRole = req.headers.get('x-user-role');
     const userId = req.headers.get('x-user-id');
@@ -46,7 +46,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       );
     }
 
-    const shiftId = parseInt(params.id);
+    const shiftId = parseInt((await params).id);
     const { status, rejectionRemarks } = await req.json();
 
     if (!status || !['APPROVED', 'REJECTED'].includes(status)) {

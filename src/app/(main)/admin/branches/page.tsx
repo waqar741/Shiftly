@@ -6,7 +6,7 @@ import { Modal, ConfirmDialog, useToast } from "@/components/ui/components";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function BranchesPage() {
+function BranchesPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -297,5 +297,14 @@ export default function BranchesPage() {
         destructive={confirmDialog.newStatus === "INACTIVE"}
       />
     </div>
+  );
+}
+
+
+export default function BranchesPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <BranchesPageContent />
+    </React.Suspense>
   );
 }

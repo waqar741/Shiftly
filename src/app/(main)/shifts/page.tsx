@@ -6,7 +6,7 @@ import { Modal, Pagination, SearchableSelect, useToast } from "@/components/ui/c
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/useDebounce";
 
-export default function MyShiftsPage() {
+function MyShiftsPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -285,5 +285,14 @@ export default function MyShiftsPage() {
         </form>
       </Modal>
     </div>
+  );
+}
+
+
+export default function MyShiftsPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <MyShiftsPageContent />
+    </React.Suspense>
   );
 }

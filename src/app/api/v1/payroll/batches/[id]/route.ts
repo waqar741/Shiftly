@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userRole = req.headers.get('x-user-role');
     if (userRole !== 'ADMIN' && userRole !== 'SUPER_ADMIN') {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       );
     }
 
-    const batchId = parseInt(params.id);
+    const batchId = parseInt((await params).id);
 
     const batch = await prisma.payrollBatch.findUnique({
       where: { id: batchId },

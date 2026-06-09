@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
         prisma.payrollItem.findFirst({
           where: { userId },
           orderBy: { id: 'desc' },
-          include: { payrollBatch: true },
+          include: { batch: true },
         }),
       ]);
 
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
           pendingExpensesAmount: pendingExpensesAgg._sum.amount || 0,
           pendingExpensesCount: pendingExpensesAgg._count,
           lastPayoutAmount: lastPayroll?.totalPay || 0,
-          lastPayoutMonth: lastPayroll?.payrollBatch?.month ? `${lastPayroll.payrollBatch.month}/${lastPayroll.payrollBatch.year}` : null,
+          lastPayoutMonth: lastPayroll?.batch?.month ? `${lastPayroll.batch.month}/${lastPayroll.batch.year}` : null,
           isEmployee: true,
         },
       });

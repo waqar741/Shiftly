@@ -3,15 +3,14 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const expenseId = parseInt(params.id);
+    const expenseId = parseInt((await params).id);
     const expense = await prisma.expense.findUnique({
       where: { id: expenseId },
       include: {
         user: { select: { fullName: true, employeeCode: true } },
-        category: { select: { name: true } },
-        approvedByUser: { select: { fullName: true } }
+        category: { select: { name: true } }
       }
     });
 
@@ -34,7 +33,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const userRole = req.headers.get('x-user-role');
     const userId = req.headers.get('x-user-id');
@@ -46,7 +45,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       );
     }
 
-    const expenseId = parseInt(params.id);
+    const expenseId = parseInt((await params).id);
     const { status, rejectionRemarks } = await req.json();
 
     if (!status || !['APPROVED', 'REJECTED'].includes(status)) {
@@ -67,10 +66,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       where: { id: expenseId },
       data: {
         status,
-        ...(status === 'REJECTED' && { rejectionRemarks }),
-        ...(status === 'APPROVED' && { rejectionRemarks: null }),
-        approvedBy: parseInt(userId!),
-        approvedAt: new Date(),
+        ...(status === 'REJECTED' && { remarks: rejectionRemarks }),
+        ...(status === 'APPROVED' && { remarks: null }),
       },
     });
 

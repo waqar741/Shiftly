@@ -7,7 +7,7 @@ import { Modal, ConfirmDialog, Pagination, SearchableSelect, useToast } from "@/
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export default function AdminShiftsPage() {
+function AdminShiftsPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -382,5 +382,14 @@ export default function AdminShiftsPage() {
         </form>
       </Modal>
     </div>
+  );
+}
+
+
+export default function AdminShiftsPage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <AdminShiftsPageContent />
+    </React.Suspense>
   );
 }
