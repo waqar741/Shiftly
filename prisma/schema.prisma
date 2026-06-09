@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // ADMIN, SUPER_ADMIN, BRANCH_MANAGER, EMPLOYEE
+  description String?
+  users       User[]
+}
+
+model Branch {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  city      String
+  address   String?
+  status    String   @default("ACTIVE") // ACTIVE, INACTIVE
+  users     User[]
+  rates     RateHistory[]
+  shifts    ShiftLog[]
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  employeeCode String   @unique
+  fullName     String
+  email        String   @unique
+  mobile       String
+  password     String
+  status       String   @default("ACTIVE") // ACTIVE, INACTIVE
+  
+  roleId       Int
+  role         Role     @relation(fields: [roleId], references: [id])
+  
+  branchId     Int?
+  branch       Branch?  @relation(fields: [branchId], references: [id])
+
+  shifts       ShiftLog[]
+  expenses     Expense[]
+  payrollItems PayrollItem[]
+}
+
+model ShiftType {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  status      String   @default("ACTIVE")
+  
+  rates       RateHistory[]
+  shifts      ShiftLog[]
+}
+
+model RateHistory {
+  id            Int      @id @default(autoincrement())
+  rate          Float
+  effectiveFrom DateTime
+  
+  branchId      Int
+  branch        Branch   @relation(fields: [branchId], references: [id])
+  
+  shiftTypeId   Int
+  shiftType     ShiftType @relation(fields: [shiftTypeId], references: [id])
+}
+
+model ShiftLog {
+  id            Int      @id @default(autoincrement())
+  workDate      DateTime
+  remarks       String?
+  status        String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  calculatedPay Float?
+  
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+  
+  branchId      Int
+  branch        Branch   @relation(fields: [branchId], references: [id])
+  
+  shiftTypeId   Int
+  shiftType     ShiftType @relation(fields: [shiftTypeId], references: [id])
+  
+  @@unique([userId, workDate]) // One shift per employee per day
+}
+
+model ExpenseCategory {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  status      String    @default("ACTIVE")
+  expenses    Expense[]
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  expenseDate DateTime
+  amount      Float
+  description String?
+  receiptUrl  String?
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  remarks     String?
+  
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  
+  categoryId  Int
+  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
+}
+
+model PayrollBatch {
+  id          Int      @id @default(autoincrement())
+  month       Int
+  year        Int
+  totalAmount Float    @default(0)
+  status      String   @default("DRAFT") // DRAFT, LOCKED
+  createdAt   DateTime @default(now())
+  
+  items       PayrollItem[]
+  
+  @@unique([month, year])
+}
+
+model PayrollItem {
+  id             Int      @id @default(autoincrement())
+  payrollBatchId Int
+  batch          PayrollBatch @relation(fields: [payrollBatchId], references: [id])
+  
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+  
+  shiftCount     Int      @default(0)
+  shiftPay       Float    @default(0)
+  expenseCount   Int      @default(0)
+  expensePay     Float    @default(0)
+  totalPay       Float    @default(0)
+}
+
+model ImportPreview {
+  id        String   @id @default(uuid())
+  data      String   // JSON string of rows
+  createdAt DateTime @default(now())
+}
