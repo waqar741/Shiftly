@@ -266,7 +266,7 @@ function BranchesPageContent() {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 border-t border-slate-100 pt-3">
                     <div>
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Employees</span>
                       <span>{branch._count?.users || 0}</span>

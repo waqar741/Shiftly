@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} bg-slate-50 text-slate-800 h-screen flex overflow-hidden text-sm`}>
+      <body className={`${inter.className} bg-slate-50 text-slate-800 h-[100dvh] flex flex-col text-sm`}>
         <ToastProvider>
           {children}
         </ToastProvider>

@@ -168,7 +168,7 @@ export default function EmployeeDashboardPage() {
                   Approved
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mb-3">Travel Claim (£ 1,500)</p>
+              <p className="text-sm text-slate-600 mb-3">Travel Claim (₹ 1,500)</p>
               <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
                 <button className="text-slate-400 hover:text-indigo-600 transition-colors p-1">
                   <Eye className="w-4 h-4" />

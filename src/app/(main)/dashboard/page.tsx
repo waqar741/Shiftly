@@ -231,7 +231,7 @@ export default function DashboardPage() {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-3 bg-slate-50 p-2 rounded-md">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-3 border-t border-slate-100 pt-3">
                     <div>
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Branch</span>
                       <span className="truncate block" title={shift.branch?.name}>{shift.branch?.name}</span>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
 
                   <div className="flex justify-between items-center pt-2 border-t border-slate-100">
                     <span className="text-xs text-slate-500 uppercase tracking-wide">Cost</span>
-                    <span className="font-medium text-slate-900">£ {shift.calculatedPay}</span>
+                    <span className="font-medium text-slate-900">₹ {shift.calculatedPay}</span>
                   </div>
                 </div>
               ))

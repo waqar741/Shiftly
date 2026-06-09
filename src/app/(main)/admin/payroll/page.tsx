@@ -185,9 +185,9 @@ export default function PayrollPage() {
                     )}
                   </div>
                   
-                  <div className="bg-slate-50 p-3 rounded-md mb-4 border border-slate-100 flex justify-between items-center">
+                  <div className="mb-4 border-t border-slate-100 pt-3 flex justify-between items-center">
                     <span className="text-xs text-slate-500 uppercase">Total Amount</span>
-                    <span className="font-medium text-slate-900">£ {payroll.totalAmount}</span>
+                    <span className="font-medium text-slate-900">₹ {payroll.totalAmount}</span>
                   </div>
 
                   <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">

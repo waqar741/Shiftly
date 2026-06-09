@@ -228,11 +228,11 @@ function RatesPageContent() {
                       <p className="text-xs text-slate-500">{rate.shiftType?.name}</p>
                     </div>
                     <span className="font-medium text-slate-900 bg-slate-50 px-2 py-1 rounded-md text-sm">
-                      £ {rate.rate}
+                      ₹ {rate.rate}
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 border-t border-slate-100 pt-3">
                     <div>
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Effective From</span>
                       <span>{new Date(rate.effectiveFrom).toLocaleDateString()}</span>

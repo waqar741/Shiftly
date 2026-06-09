@@ -390,14 +390,14 @@ function ExpensesPageContent() {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 border-t border-slate-100 pt-3">
                     <div className="col-span-2">
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Description</span>
                       <span className="truncate block" title={expense.description}>{expense.description || '-'}</span>
                     </div>
                     <div>
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Amount</span>
-                      <span className="font-medium text-slate-900">£ {expense.amount}</span>
+                      <span className="font-medium text-slate-900">₹ {expense.amount}</span>
                     </div>
                     <div>
                       <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Receipt</span>
