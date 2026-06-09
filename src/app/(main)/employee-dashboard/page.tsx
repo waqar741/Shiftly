@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function EmployeeDashboardPage() {
   return (
     <div className="flex flex-col h-full max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-8 mt-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 mt-2 space-y-4 sm:space-y-0">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900">Welcome, Waquar</h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -24,7 +24,7 @@ export default function EmployeeDashboardPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
           <div className="flex justify-between items-start mb-2">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
@@ -93,7 +93,8 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse">
             <thead className="sticky top-0 bg-white z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Date</th>
@@ -136,6 +137,45 @@ export default function EmployeeDashboardPage() {
               </tr>
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="font-medium text-slate-900 leading-tight">Shift</p>
+                  <p className="text-xs text-slate-500">Jun 8, 2026</p>
+                </div>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700">
+                  Pending
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 mb-3">Full Day at Panvel</p>
+              <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                <button className="text-slate-400 hover:text-indigo-600 transition-colors p-1">
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <p className="font-medium text-slate-900 leading-tight">Expense</p>
+                  <p className="text-xs text-slate-500">Jun 7, 2026</p>
+                </div>
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800">
+                  Approved
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 mb-3">Travel Claim (£ 1,500)</p>
+              <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                <button className="text-slate-400 hover:text-indigo-600 transition-colors p-1">
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

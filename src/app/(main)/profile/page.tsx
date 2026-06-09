@@ -136,7 +136,7 @@ export default function ProfilePage() {
                 <p className="text-sm text-slate-500">{user?.employeeCode || '-'}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
                 <input 
@@ -151,7 +151,7 @@ export default function ProfilePage() {
                 <input type="text" value={user?.employeeCode || ''} disabled className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-500 shadow-sm" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5"><Mail className="w-3.5 h-3.5 inline mr-1 opacity-50" />Email</label>
                 <input 
@@ -171,7 +171,7 @@ export default function ProfilePage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5"><Building className="w-3.5 h-3.5 inline mr-1 opacity-50" />Branch</label>
                 <input type="text" value={user?.branch?.name || 'Unassigned'} disabled className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-500 shadow-sm" />

@@ -62,7 +62,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-semibold text-slate-900">Welcome Back</h1>
           <p className="text-sm text-slate-500 mt-1">Here is a summary of your upcoming shifts and pending expenses.</p>
         </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
             <div className="flex justify-between items-start mb-2">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Upcoming Shifts</p>
@@ -96,7 +96,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className="grid grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
           <div className="flex justify-between items-start mb-2">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Total Payroll</p>
@@ -163,7 +163,8 @@ export default function DashboardPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left whitespace-nowrap border-collapse">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse">
             <thead>
               <tr className="border-b border-slate-200 text-xs font-medium text-slate-500 uppercase tracking-wider bg-slate-50">
                 <th className="px-4 py-3">Employee</th>
@@ -208,6 +209,51 @@ export default function DashboardPage() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {stats?.recentShifts?.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No recent shifts found</div>
+            ) : (
+              stats?.recentShifts?.map((shift: any) => (
+                <div key={shift.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{shift.user?.fullName}</p>
+                      <p className="text-xs text-slate-500">{shift.user?.employeeCode}</p>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium ${
+                      shift.status === "APPROVED" ? "bg-emerald-100 text-emerald-800" :
+                      shift.status === "REJECTED" ? "bg-red-100 text-red-800" :
+                      "bg-amber-100 text-amber-800"
+                    }`}>
+                      {shift.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-3 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Branch</span>
+                      <span className="truncate block" title={shift.branch?.name}>{shift.branch?.name}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Date</span>
+                      <span>{new Date(shift.workDate).toLocaleDateString()}</span>
+                    </div>
+                    <div className="col-span-2 border-t border-slate-100 pt-2 mt-1">
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Shift Type</span>
+                      <span>{shift.shiftType?.name}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                    <span className="text-xs text-slate-500 uppercase tracking-wide">Cost</span>
+                    <span className="font-medium text-slate-900">£ {shift.calculatedPay}</span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
       <Toast isVisible={showToast} onClose={() => setShowToast(false)} message="Export started successfully." />

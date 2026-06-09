@@ -186,7 +186,8 @@ function ShiftTypesPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[600px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[600px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Name</th>
@@ -229,6 +230,42 @@ function ShiftTypesPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading shift types...</div>
+            ) : shiftTypes.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No shift types found. Add one to get started.</div>
+            ) : (
+              shiftTypes.map((st) => (
+                <div key={st.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{st.name}</p>
+                      <p className="text-xs text-slate-500 truncate max-w-[200px]" title={st.description}>{st.description || '-'}</p>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${st.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-800'}`}>
+                      {st.status}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button onClick={() => openEditModal(st)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
+                    </button>
+                    <button onClick={() => openStatusConfirm(st)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      {st.status === 'ACTIVE' ? (
+                        <><PowerOff className="w-3.5 h-3.5 mr-1.5 text-red-500" /> Disable</>
+                      ) : (
+                        <><CheckCircle className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Enable</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 

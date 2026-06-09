@@ -94,7 +94,8 @@ export default function PayrollPage() {
 
       <div className="bg-white border border-slate-200 rounded-lg shadow-sm flex-1 flex flex-col min-h-0">
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Month</th>
@@ -156,6 +157,53 @@ export default function PayrollPage() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading payroll batches...</div>
+            ) : payrollBatches.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No payroll batches found.</div>
+            ) : (
+              payrollBatches.map((payroll) => (
+                <div key={payroll.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">
+                        {new Date(payroll.year, payroll.month - 1).toLocaleString('default', { month: 'long' })} {payroll.year}
+                      </p>
+                      <p className="text-xs text-slate-500">{payroll.items?.length || 0} Employees</p>
+                    </div>
+                    {payroll.status === "LOCKED" ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-800 text-white">
+                        <Lock className="w-3 h-3 mr-1" /> Locked
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-800">
+                        Draft
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="bg-slate-50 p-3 rounded-md mb-4 border border-slate-100 flex justify-between items-center">
+                    <span className="text-xs text-slate-500 uppercase">Total Amount</span>
+                    <span className="font-medium text-slate-900">£ {payroll.totalAmount}</span>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button onClick={() => viewDetails(payroll)} className="px-3 py-1.5 bg-white border border-slate-200 text-indigo-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors">
+                      View
+                    </button>
+                    {payroll.status !== "LOCKED" && (
+                      <button onClick={() => handleLock(payroll.id)} className="px-3 py-1.5 bg-white border border-slate-200 text-amber-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors flex items-center">
+                        <Lock className="w-3.5 h-3.5 mr-1" /> Lock
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -170,7 +218,7 @@ export default function PayrollPage() {
           <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-4">
             <p className="text-xs text-amber-800 font-medium">Warning: Generating a new payroll draft will fetch latest approved shifts and expenses for this period.</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Month</label>
               <select 
@@ -203,7 +251,7 @@ export default function PayrollPage() {
       <Modal isOpen={detailOpen} onClose={() => setDetailOpen(false)} title={`Payroll Details — ${selectedBatch ? new Date(selectedBatch.year, selectedBatch.month - 1).toLocaleString('default', { month: 'long' }) + ' ' + selectedBatch.year : ''}`} width="max-w-4xl">
         {selectedBatch && (
           <>
-            <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 pb-4 border-b border-slate-100 space-y-4 md:space-y-0">
               <div className="flex space-x-6">
                 <div>
                   <p className="text-xs font-medium text-slate-500 uppercase">Total Employees</p>
@@ -214,7 +262,7 @@ export default function PayrollPage() {
                   <p className="text-sm font-semibold text-slate-900 mt-0.5">₹ {selectedBatch.totalAmount}</p>
                 </div>
               </div>
-              <div className="relative w-64">
+              <div className="relative w-full md:w-64">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input type="text" placeholder="Search employee..." className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-300 focus:bg-white transition-all" />
               </div>

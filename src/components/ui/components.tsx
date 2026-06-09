@@ -28,19 +28,19 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm" onClick={onClose}>
-      <div className={`bg-white rounded-xl shadow-xl w-full ${width} border border-slate-200 overflow-hidden`} onClick={(e) => e.stopPropagation()}>
-        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-slate-900/40 backdrop-blur-sm" onClick={onClose}>
+      <div className={`bg-white rounded-none md:rounded-xl shadow-xl w-full h-full md:h-auto ${width} border-0 md:border border-slate-200 overflow-hidden flex flex-col`} onClick={(e) => e.stopPropagation()}>
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-white flex-shrink-0">
           <h2 className="text-base font-semibold text-slate-900">{title}</h2>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600 rounded-md hover:bg-slate-100 transition-colors">
-            <X className="w-4 h-4" />
+          <button onClick={onClose} className="p-2 md:p-1 text-slate-400 hover:text-slate-600 rounded-md hover:bg-slate-100 transition-colors">
+            <X className="w-5 h-5 md:w-4 md:h-4" />
           </button>
         </div>
-        <div className="p-5 max-h-[70vh] overflow-y-auto">
+        <div className="p-5 overflow-y-auto flex-1 md:flex-none md:max-h-[70vh]">
           {children}
         </div>
         {primaryAction && (
-          <div className="px-5 py-4 border-t border-slate-100 bg-slate-50 flex justify-end space-x-3">
+          <div className="px-5 py-4 border-t border-slate-100 bg-slate-50 flex justify-end space-x-3 flex-shrink-0 mt-auto md:mt-0">
             <button onClick={onClose} className="px-4 py-2 bg-white border border-slate-200 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm transition-colors">
               {secondaryLabel}
             </button>
@@ -197,7 +197,7 @@ export function Pagination({
   const to = Math.min(page * pageSize, total);
 
   return (
-    <div className="p-4 border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
+    <div className="p-4 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between text-sm text-slate-500 space-y-4 md:space-y-0">
       <div className="flex items-center space-x-3">
         <span>Showing {from} to {to} of {total}</span>
         <select
@@ -273,7 +273,7 @@ export function Select({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 hover:bg-slate-50 shadow-sm flex items-center justify-between transition-colors focus:outline-none focus:ring-1 focus:ring-slate-300"
+        className="w-full px-3 py-2 md:py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 hover:bg-slate-50 shadow-sm flex items-center justify-between transition-colors focus:outline-none focus:ring-1 focus:ring-slate-300"
       >
         <span className={selectedOption ? "text-slate-900" : "text-slate-500"}>
           {selectedOption ? selectedOption.label : placeholder}
@@ -416,7 +416,7 @@ export function SearchableSelect({
         type="button"
         disabled={disabled}
         onClick={() => { setIsOpen(!isOpen); setSearch(""); }}
-        className="w-full px-3 py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 hover:bg-slate-50 shadow-sm flex items-center justify-between transition-colors focus:outline-none focus:ring-1 focus:ring-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full px-3 py-2 md:py-1.5 bg-white border border-slate-200 rounded text-xs text-slate-700 hover:bg-slate-50 shadow-sm flex items-center justify-between transition-colors focus:outline-none focus:ring-1 focus:ring-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <span className={selectedOption ? "text-slate-900" : "text-slate-500"}>
           {selectedOption ? selectedOption.label : placeholder}

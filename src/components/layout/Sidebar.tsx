@@ -18,6 +18,7 @@ import {
   Bell,
   BarChart3,
   Layers,
+  X,
 } from "lucide-react";
 import { useRole } from "./RoleContext";
 
@@ -56,7 +57,7 @@ const navItems = [
   },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMenuOpen?: boolean; setIsMobileMenuOpen?: (val: boolean) => void }) {
   const pathname = usePathname();
   const { role } = useRole();
 
@@ -68,11 +69,31 @@ export function Sidebar() {
   const currentRole = (role || "").toUpperCase().replace(" ", "_");
 
   return (
-    <aside className="w-56 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-10">
-      <div className="h-12 flex items-center px-4">
-        <Image src="/favicon.svg" alt="Shiftly" width={18} height={18} className="mr-2" />
-        <span className="font-semibold text-sm">Shiftly</span>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/40 z-40 md:hidden backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen?.(false)}
+        />
+      )}
+
+      <aside className={`
+        fixed md:sticky top-0 left-0 h-full w-64 md:w-56 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-50 md:z-10 transition-transform duration-300 ease-in-out
+        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+      `}>
+        <div className="h-12 flex items-center justify-between px-4 border-b md:border-none border-slate-100 flex-shrink-0">
+          <div className="flex items-center">
+            <Image src="/favicon.svg" alt="Shiftly" width={18} height={18} className="mr-2" />
+            <span className="font-semibold text-sm">Shiftly</span>
+          </div>
+          <button 
+            className="md:hidden p-1 text-slate-400 hover:text-slate-600 rounded-md"
+            onClick={() => setIsMobileMenuOpen?.(false)}
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
 
       <div className="flex-1 overflow-y-auto py-2 px-2 space-y-5">
         {navItems
@@ -93,6 +114,7 @@ export function Sidebar() {
                       <Link
                         key={item.href}
                         href={item.href}
+                        onClick={() => setIsMobileMenuOpen?.(false)}
                         className={`flex items-center px-2 py-1.5 rounded-md transition-colors ${
                           active
                             ? "bg-slate-900 text-white font-medium shadow-sm"
@@ -115,6 +137,7 @@ export function Sidebar() {
           <LogOut className="w-3.5 h-3.5 mr-2 opacity-50" /> Logout
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

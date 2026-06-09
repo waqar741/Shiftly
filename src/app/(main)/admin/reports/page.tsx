@@ -65,29 +65,29 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-5 gap-6 h-full">
-        <div className="col-span-1 bg-white border border-slate-200 rounded-lg shadow-sm p-3">
-          <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider px-2">Report Types</p>
-          <nav className="space-y-1">
-            <button className="w-full text-left px-3 py-2 bg-slate-100 text-slate-900 rounded-md text-sm font-medium transition-colors">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6 h-full flex-1">
+        <div className="col-span-1 bg-white border border-slate-200 rounded-lg shadow-sm p-3 flex-shrink-0">
+          <p className="text-xs font-semibold text-slate-400 mb-3 uppercase tracking-wider px-2 hidden md:block">Report Types</p>
+          <nav className="flex overflow-x-auto space-x-2 md:space-x-0 md:flex-col md:space-y-1 pb-1 md:pb-0">
+            <button className="whitespace-nowrap md:w-full text-left px-3 py-2 bg-slate-100 text-slate-900 rounded-md text-sm font-medium transition-colors">
               Employee Report
             </button>
-            <button className="w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
+            <button className="whitespace-nowrap md:w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
               Branch Report
             </button>
-            <button className="w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
+            <button className="whitespace-nowrap md:w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
               Payroll Report
             </button>
-            <button className="w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
+            <button className="whitespace-nowrap md:w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
               Expense Report
             </button>
-            <button className="w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
+            <button className="whitespace-nowrap md:w-full text-left px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-md text-sm font-medium transition-colors">
               Approval Report
             </button>
           </nav>
         </div>
 
-        <div className="col-span-4 bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col">
+        <div className="col-span-1 md:col-span-4 bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col">
           <div className="p-5 border-b border-slate-100">
             <h2 className="text-lg font-medium text-slate-900 flex items-center">
               <FileText className="w-5 h-5 mr-2 text-slate-400" /> Employee Report

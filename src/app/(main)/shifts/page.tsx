@@ -183,7 +183,8 @@ function MyShiftsPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Date</th>
@@ -229,6 +230,46 @@ function MyShiftsPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading shifts...</div>
+            ) : shifts.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No shifts found. Submit your first shift to get started.</div>
+            ) : (
+              shifts.map((shift) => (
+                <div key={shift.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{new Date(shift.workDate).toLocaleDateString()}</p>
+                      <p className="text-xs text-slate-500">{shift.shiftType?.name}</p>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${shift.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : shift.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`}>
+                      {shift.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Branch</span>
+                      <span>{shift.branch?.name}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Amount</span>
+                      <span className="font-medium text-slate-900">£ {shift.calculatedPay}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button className="px-3 py-1.5 bg-white border border-slate-200 text-indigo-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors">
+                      View
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <Pagination total={shifts.length} page={1} pageSize={25} />
       </div>
@@ -241,7 +282,7 @@ function MyShiftsPageContent() {
         primaryLabel={submitting ? "Submitting..." : "Submit Shift"}
       >
         <form className="space-y-4" onSubmit={handleSave}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Date <span className="text-red-500">*</span></label>
               <input 

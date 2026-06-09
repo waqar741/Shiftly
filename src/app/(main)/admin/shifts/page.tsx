@@ -210,7 +210,8 @@ function AdminShiftsPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[1200px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[1200px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-4 py-3 w-10 text-center"><input type="checkbox" className="rounded border-slate-300 accent-slate-800" /></th>
@@ -268,6 +269,56 @@ function AdminShiftsPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading shifts...</div>
+            ) : shifts.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No shifts found.</div>
+            ) : (
+              shifts.map((shift) => (
+                <div key={shift.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{shift.user.fullName}</p>
+                      <p className="text-xs text-slate-500">{new Date(shift.workDate).toLocaleDateString()} &middot; {shift.shiftType.name}</p>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${shift.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : shift.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'}`}>
+                      {shift.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Branch</span>
+                      <span>{shift.branch.name}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Amount</span>
+                      <span className="font-medium text-slate-900">£ {shift.calculatedPay}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button onClick={() => { setSelectedShift(shift); setDetailOpen(true); }} className="px-3 py-1.5 bg-white border border-slate-200 text-indigo-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors">
+                      View
+                    </button>
+                    {shift.status === 'PENDING' && (
+                      <>
+                        <button onClick={() => handleApprove(shift)} className="px-3 py-1.5 bg-white border border-slate-200 text-emerald-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors">
+                          Approve
+                        </button>
+                        <button onClick={() => { setSelectedShift(shift); setRejectRemarks(""); setRejectOpen(true); }} className="px-3 py-1.5 bg-white border border-slate-200 text-red-600 hover:bg-slate-50 rounded-md text-xs font-medium transition-colors">
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         
         <Pagination total={shifts.length} page={1} pageSize={25} />

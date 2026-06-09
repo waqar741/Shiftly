@@ -271,7 +271,8 @@ function ExpensesPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 {isAdmin && (
@@ -352,6 +353,67 @@ function ExpensesPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading expenses...</div>
+            ) : expenses.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No expenses found.</div>
+            ) : (
+              expenses.map((expense) => (
+                <div key={expense.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col relative">
+                  {isAdmin && (
+                    <div className="absolute top-4 right-4">
+                      <input 
+                        type="checkbox" 
+                        className="rounded border-slate-300 accent-slate-800 w-5 h-5"
+                        checked={selectedIds.has(expense.id)}
+                        onChange={() => toggleSelect(expense.id)}
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-start justify-between mb-3 pr-8">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{expense.category?.name}</p>
+                      <p className="text-xs text-slate-500">{new Date(expense.expenseDate).toLocaleDateString()} &middot; {expense.user?.fullName}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-3">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${
+                      expense.status === "APPROVED" ? "bg-emerald-100 text-emerald-800" : 
+                      expense.status === "REJECTED" ? "bg-red-100 text-red-800" :
+                      "bg-amber-100 text-amber-800"
+                    }`}>
+                      {expense.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div className="col-span-2">
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Description</span>
+                      <span className="truncate block" title={expense.description}>{expense.description || '-'}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Amount</span>
+                      <span className="font-medium text-slate-900">£ {expense.amount}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Receipt</span>
+                      {expense.receiptUrl ? (
+                        <button className="text-indigo-600 hover:text-indigo-800 flex items-center h-full">
+                          <Download className="w-4 h-4 inline mr-1" /> Download
+                        </button>
+                      ) : (
+                        <span>-</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -363,7 +425,7 @@ function ExpensesPageContent() {
         primaryLabel={submitting ? "Submitting..." : "Submit Expense"}
       >
         <form className="space-y-4" onSubmit={handleSave}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Date <span className="text-red-500">*</span></label>
               <input 

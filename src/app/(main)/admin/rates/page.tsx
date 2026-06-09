@@ -169,7 +169,8 @@ function RatesPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Branch</th>
@@ -211,6 +212,46 @@ function RatesPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading rates...</div>
+            ) : rates.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No rates found.</div>
+            ) : (
+              rates.map((rate) => (
+                <div key={rate.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="font-medium text-slate-900 leading-tight">{rate.branch?.name}</p>
+                      <p className="text-xs text-slate-500">{rate.shiftType?.name}</p>
+                    </div>
+                    <span className="font-medium text-slate-900 bg-slate-50 px-2 py-1 rounded-md text-sm">
+                      £ {rate.rate}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Effective From</span>
+                      <span>{new Date(rate.effectiveFrom).toLocaleDateString()}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Effective To</span>
+                      <span>{rate.effectiveTo ? new Date(rate.effectiveTo).toLocaleDateString() : '-'}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      <History className="w-3.5 h-3.5 mr-1.5" /> History
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -222,7 +263,7 @@ function RatesPageContent() {
         primaryLabel={submitting ? "Saving..." : "Create Rate"}
       >
         <form className="space-y-4" onSubmit={handleSave}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Branch <span className="text-red-500">*</span></label>
               <SearchableSelect

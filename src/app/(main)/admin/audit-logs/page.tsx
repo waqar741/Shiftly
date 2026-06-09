@@ -16,8 +16,8 @@ export default function AuditLogsPage() {
       </div>
 
       <div className="bg-white border border-slate-200 rounded-lg shadow-sm flex-1 flex flex-col min-h-0">
-        <div className="px-4 py-3 border-b border-slate-100 flex items-center space-x-2 bg-slate-50/50">
-          <Filter className="w-3.5 h-3.5 text-slate-400 mr-1" />
+        <div className="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center gap-2 bg-slate-50/50">
+          <Filter className="w-3.5 h-3.5 text-slate-400 mr-1 hidden sm:block" />
           <select disabled className="px-2.5 py-1 bg-white border border-slate-200 rounded text-xs text-slate-400 cursor-not-allowed shadow-sm focus:outline-none">
             <option>All Users</option>
           </select>

@@ -188,7 +188,8 @@ function BranchesPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Branch Name</th>
@@ -240,6 +241,58 @@ function BranchesPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading branches...</div>
+            ) : branches.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No branches found. Create one to get started.</div>
+            ) : (
+              branches.map((branch) => (
+                <div key={branch.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-semibold text-sm mr-3">
+                        <MapPin className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-900 leading-tight">{branch.name}</p>
+                        <p className="text-xs text-slate-500">{branch.city}</p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${branch.status === "ACTIVE" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-800"}`}>
+                      {branch.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Employees</span>
+                      <span>{branch._count?.users || 0}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Created Date</span>
+                      <span>{new Date(branch.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button onClick={() => openEditModal(branch)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
+                    </button>
+                    <button onClick={() => confirmToggleStatus(branch)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      {branch.status === "ACTIVE" ? (
+                        <><PowerOff className="w-3.5 h-3.5 mr-1.5 text-red-500" /> Deactivate</>
+                      ) : (
+                        <><CheckCircle className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Activate</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 

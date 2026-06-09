@@ -260,7 +260,8 @@ function EmployeesPageContent() {
         </div>
 
         <div className="overflow-auto flex-1">
-          <table className="w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
+          {/* Desktop Table View */}
+          <table className="hidden md:table w-full text-left whitespace-nowrap border-collapse min-w-[800px]">
             <thead className="sticky top-0 bg-slate-50 z-10 border-b border-slate-200">
               <tr className="text-xs font-medium text-slate-500 uppercase tracking-wider">
                 <th className="px-6 py-3">Employee</th>
@@ -321,6 +322,66 @@ function EmployeesPageContent() {
               )}
             </tbody>
           </table>
+
+          {/* Mobile Cards View */}
+          <div className="md:hidden flex flex-col p-4 space-y-4">
+            {loading ? (
+              <div className="text-center text-slate-500 py-8">Loading employees...</div>
+            ) : employees.length === 0 ? (
+              <div className="text-center text-slate-500 py-8">No employees found. Add one to get started.</div>
+            ) : (
+              employees.map((emp) => (
+                <div key={emp.id} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-semibold text-sm mr-3">
+                        {emp.fullName.split(" ").map((n: string) => n[0]).join("").substring(0, 2)}
+                      </div>
+                      <div>
+                        <p className="font-medium text-slate-900 leading-tight">{emp.fullName}</p>
+                        <p className="text-xs text-slate-500">{emp.email}</p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${emp.status === "ACTIVE" ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-800"}`}>
+                      {emp.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-md">
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Code</span>
+                      <span className="font-mono">{emp.employeeCode}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Mobile</span>
+                      <span>{emp.mobile}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Branch</span>
+                      <span>{emp.branch?.name}</span>
+                    </div>
+                    <div>
+                      <span className="block text-slate-400 mb-0.5 text-[10px] uppercase">Role</span>
+                      <span>{emp.role?.name}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button onClick={() => openEditModal(emp)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
+                    </button>
+                    <button onClick={() => confirmToggleStatus(emp)} className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-md text-xs font-medium flex items-center transition-colors">
+                      {emp.status === "ACTIVE" ? (
+                        <><UserX className="w-3.5 h-3.5 mr-1.5 text-red-500" /> Deactivate</>
+                      ) : (
+                        <><UserCheck className="w-3.5 h-3.5 mr-1.5 text-emerald-500" /> Activate</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
@@ -332,7 +393,7 @@ function EmployeesPageContent() {
         primaryLabel={submitting ? "Saving..." : "Save Employee"}
       >
         <form className="space-y-4" onSubmit={handleSave}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Employee Code <span className="text-red-500">*</span></label>
               <input 
@@ -356,7 +417,7 @@ function EmployeesPageContent() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Email <span className="text-red-500">*</span></label>
               <input 
@@ -380,7 +441,7 @@ function EmployeesPageContent() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Branch <span className="text-red-500">*</span></label>
               <SearchableSelect
