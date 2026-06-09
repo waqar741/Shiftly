@@ -10,9 +10,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Sidebar isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen} />
-      <main className="flex-1 flex flex-col min-w-0 relative">
+      <main className="flex-1 flex flex-col min-w-0 md:ml-56">
         <TopNav onMenuClick={() => setIsMobileMenuOpen(true)} />
-        <div className="flex-1 overflow-auto p-4 md:p-6">
+        <div className="flex-1 p-4 md:p-6 pb-20 md:pb-6">
           {children}
         </div>
       </main>

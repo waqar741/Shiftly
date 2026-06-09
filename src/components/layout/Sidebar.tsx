@@ -79,7 +79,7 @@ export function Sidebar({ isMobileMenuOpen, setIsMobileMenuOpen }: { isMobileMen
       )}
 
       <aside className={`
-        fixed md:sticky top-0 left-0 h-full w-64 md:w-56 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-50 md:z-10 transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 h-[100dvh] w-64 md:w-56 bg-white border-r border-slate-200 flex flex-col flex-shrink-0 z-50 md:z-10 transition-transform duration-300 ease-in-out
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
       `}>
         <div className="h-12 flex items-center justify-between px-4 border-b md:border-none border-slate-100 flex-shrink-0">
